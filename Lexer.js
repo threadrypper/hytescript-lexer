@@ -76,6 +76,9 @@ class Lexer {
         let currentSplit = ''
 
         while (depth > 0 && this.#pos < this.#code.length) {
+            if (this.#code[this.#pos] === '(') depth++;
+            else if (this.#code[this.#pos] === ')') depth--;
+
             if (depth === 0 && this.#code[this.#pos] === ')') {
                 this.#advance()
                 break
@@ -89,9 +92,6 @@ class Lexer {
             }
 
             this.#advance()
-
-            if (this.#code[this.#pos] === '(') depth++;
-            else if (this.#code[this.#pos] === ')') depth--;
         }
 
         if (currentSplit !== '') {
@@ -129,6 +129,7 @@ class Lexer {
         // Parse the inside.
         if (this.#code[this.#pos] === ' ') {
             splits = this.#parseInside(name)
+            if (splits.length === 0) splits = null;
         }
 
         // Push the function.
@@ -153,11 +154,12 @@ class Lexer {
     }
 }
 
+const { inspect } = require('util')
 const lexer = new Lexer([], true)
-.setInput('#(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO) | #(parseInt 123) #(execute bye world))')
+.setInput('#(log #(owoo ) #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO) | #(parseInt 123) #(execute bye world))')
 
 const result = lexer.compile()
-console.log(result)
+console.log(inspect(result, { depth: null, colors: true }))
 
 
 /**
@@ -165,10 +167,5 @@ console.log(result)
  * @property {string} name - The name of the instruction.
  * @property {?string} inside - The content inside the instruction.
  * @property {?string[]} splits - The splits of the instruction.
- * @property {ClosureStates} closures - The closure states of the instruction.
  * @property {string[]} path - The current path of the instruction.
- * 
- * @typedef ClosureStates
- * @property {boolean} opens - Whether the instruction opens.
- * @property {boolean} closed - Whether the instruction is closed.
  */
