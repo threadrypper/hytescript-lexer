@@ -13,11 +13,14 @@ console.log(tasks);
 ```
 
 ## Explanation
-Lexer constructor receives three arguments.
+Lexer constructor receives four arguments.
 > `input`: The input string to be compiled.
+
 > `addMainFunction`: Adds a main function to "encapsulate" main program; this should not be enabled to compile function contents.
+
 > `separator`: Different function separators. "#(fn args), #(fn:args), #(fn=args), #(fn>args)"
 
+> `path`: The current path of the lexer.
 ## Output
 ```js
 [
