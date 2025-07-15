@@ -1,79 +1,134 @@
-# hytescript-lexer
-A custom lexer I made in 30 minutes.
+# HyteScript Lexer v2
+The improved version of the "30-mins made" lexer.
 
 ## Usage
 ```js
-// Second arg is "addMainFunction", you must set this to true for your
-// MAIN PROGRAMS, and set to false when parsing function insides.
-const lexer = new Lexer([], true)
-.setInput(
-    '#(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #(execute bye world))'
-);
+let { Lexer } = require('./path/to/Lexer');
 
-const result = lexer.compile();
-console.log(result);
+let inputString = '#!(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #*(execute bye world))';
+let lexer = new Lexer(inputString, true, ' ');
+
+let tasks = lexer.compile();
+console.log(tasks);
 ```
+
+## Explanation
+Lexer constructor receives three arguments.
+> `input`: The input string to be compiled.
+> `addMainFunction`: Adds a main function to "encapsulate" main program; this should not be enabled to compile function contents.
+> `separator`: Different function separators. "#(fn args), #(fn:args), #(fn=args), #(fn>args)"
 
 ## Output
 ```js
 [
-  {
-    name: 'HYTESCRIPTMAINFUNCTION',
-    splits: [
-      {
-        value: '#(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #(execute bye world))',
+  Task {
+    name: 'MAIN_FUNCTION',
+    states: {
+      closures: { opened: true, closed: true },
+      negated: false,
+      handled: false
+    },
+    fields: [
+      '#!(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #*(execute bye world))'
+    ],
+    inside: '#!(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #*(execute bye world))',
+    lines: [ 1 ],
+    bounds: [ 0, 121 ],
+    from: null,
+    id: '[OVERLOAD_(vbhajevl929ydfpsl23hp)]',
+    parentId: null,
+    path: [],
+    overloads: [
+      Task {
+        name: 'log',
+        states: {
+          closures: { opened: true, closed: true },
+          negated: true,
+          handled: false
+        },
+        fields: [
+          '#(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping)',
+          '#(parseInt 123) #*(execute bye world)'
+        ],
+        inside: '#(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #*(execute bye world)',
+        lines: [ 1 ],
+        bounds: [ 0, 104 ],
+        from: 0,
+        id: '[OVERLOAD_(nwds31q0tlljnby7elv65)]',
+        parentId: '[OVERLOAD_(vbhajevl929ydfpsl23hp)]',
+        path: [ 'MAIN_FUNCTION' ],
         overloads: [
-          {
-            name: 'log',
-            splits: [
-              {
-                value: '#(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping)',
-                overloads: [
-                  {
-                    name: 'toLowerCase',
-                    splits: [
-                      {
-                        value: 'CUANDO SE TE OLVIDA LA TAREA OWOOOO',
-                        overloads: []
-                      }
-                    ],
-                    inside: 'CUANDO SE TE OLVIDA LA TAREA OWOOOO',
-                    path: [ 'HYTESCRIPTMAINFUNCTION', 'log' ]
-                  },
-                  {
-                    name: 'ping',
-                    splits: null,
-                    inside: null,
-                    path: [ 'HYTESCRIPTMAINFUNCTION', 'log' ]
-                  }
-                ]
-              },
-              {
-                value: '#(parseInt 123) #(execute bye world)',
-                overloads: [
-                  {
-                    name: 'parseInt',
-                    splits: [ { value: '123', overloads: [] } ],
-                    inside: '123',
-                    path: [ 'HYTESCRIPTMAINFUNCTION', 'log' ]
-                  },
-                  {
-                    name: 'execute',
-                    splits: [ { value: 'bye world', overloads: [] } ],
-                    inside: 'bye world',
-                    path: [ 'HYTESCRIPTMAINFUNCTION', 'log' ]
-                  }
-                ]
-              }
-            ],
-            inside: '#(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #(execute bye world)',
-            path: [ 'HYTESCRIPTMAINFUNCTION' ]
+          Task {
+            name: 'toLowerCase',
+            states: {
+              closures: { opened: true, closed: true },
+              negated: false,
+              handled: false
+            },
+            fields: [ 'CUANDO SE TE OLVIDA LA TAREA OWOOOO' ],
+            inside: 'CUANDO SE TE OLVIDA LA TAREA OWOOOO',
+            lines: [ 1 ],
+            bounds: [ 0, 49 ],
+            from: 0,
+            id: '[OVERLOAD_(24ux6kbymwq67ef2z6gpnw)]',
+            parentId: '[OVERLOAD_(nwds31q0tlljnby7elv65)]',
+            path: [ 'MAIN_FUNCTION', 'log' ],
+            overloads: []
+          },
+          Task {
+            name: 'ping',
+            states: {
+              closures: { opened: true, closed: true },
+              negated: false,
+              handled: false
+            },
+            fields: null,
+            inside: null,
+            lines: [ 1 ],
+            bounds: [ 50, 56 ],
+            from: 1,
+            id: '[OVERLOAD_(ywfxcjy8uknanuuf3eado)]',
+            parentId: '[OVERLOAD_(nwds31q0tlljnby7elv65)]',
+            path: [ 'MAIN_FUNCTION', 'log' ],
+            overloads: []
+          },
+          Task {
+            name: 'parseInt',
+            states: {
+              closures: { opened: true, closed: true },
+              negated: false,
+              handled: false
+            },
+            fields: [ '123' ],
+            inside: '123',
+            lines: [ 1 ],
+            bounds: [ 0, 14 ],
+            from: 2,
+            id: '[OVERLOAD_(jcebe1c5qzj4717j2kow)]',
+            parentId: '[OVERLOAD_(nwds31q0tlljnby7elv65)]',
+            path: [ 'MAIN_FUNCTION', 'log' ],
+            overloads: []
+          },
+          Task {
+            name: 'execute',
+            states: {
+              closures: { opened: true, closed: true },
+              negated: false,
+              handled: true
+            },
+            fields: [ 'bye world' ],
+            inside: 'bye world',
+            lines: [ 1 ],
+            bounds: [ 16, 36 ],
+            from: 3,
+            id: '[OVERLOAD_(oadl121omk85zevvl4eauy)]',
+            parentId: '[OVERLOAD_(nwds31q0tlljnby7elv65)]',
+            path: [ 'MAIN_FUNCTION', 'log' ],
+            overloads: []
           }
         ]
       }
-    ],
-    inside: '#(log #(toLowerCase CUANDO SE TE OLVIDA LA TAREA OWOOOO)#(ping) | #(parseInt 123) #(execute bye world))',
-    path: []
+    ]
   }
 ]
 ```
