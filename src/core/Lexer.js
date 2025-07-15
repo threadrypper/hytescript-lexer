@@ -328,10 +328,11 @@ class Lexer {
      * Creates a new lexer.
      * @param {string} input - The string input to compile.
      * @param {boolean} addMainTask - Whether add the main task.
+     * @param {string[]} [path=[]] - The current path of the lexer.
      */
-    constructor(input = '', addMainTask = true, separator = Lexer.separator) {
+    constructor(input = '', addMainTask = true, separator = Lexer.separator, path = []) {
         Lexer.setSeparator(separator);
-        this.setInput(input, addMainTask);
+        this.setInput(input, addMainTask, path);
     };
 
     /**
@@ -545,8 +546,7 @@ class Lexer {
         // Compiling the nested tasks.
         let argi = 0;
         for (const arg of args) {
-            const lexer = new Lexer(arg, false, Lexer.separator);
-            lexer.setInput(arg, false, this.#path);
+            const lexer = new Lexer(arg, false, Lexer.separator, this.#path);
             const overloads = lexer.compile();
 
             // Giving each overload a parent ID and adding them to the parent task.
